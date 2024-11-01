@@ -1,17 +1,54 @@
 {
-  "name": "nuxt-app",
-  "private": true,
+  "name": "@ouladck/walkthrough-nuxt",
+  "version": "0.0.0",
   "type": "module",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "unpkg": "dist/index.umd.js",
+  "types": "walkthrough.d.ts",
+  "files": [
+    "dist",
+    "walkthrough.d.ts"
+  ],
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "patch": "npm version patch -m \"Upgrade to %s\" && git push && git push --tags",
+    "minor": "npm version minor -m \"Upgrade to %s\" && git push && git push --tags",
+    "major": "npm version major -m \"Upgrade to %s\" && git push && git push --tags"
   },
   "dependencies": {
     "nuxt": "^3.13.0",
     "vue": "latest",
     "vue-router": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ouladck/walkthrough-nuxt.git"
+  },
+  "keywords": [
+    "walkthrough",
+    "tooltips",
+    "interactive",
+    "tutorials",
+    "tutorials",
+    "guided",
+    "tours",
+    "vue"
+  ],
+  "author": "Karim Oulad Chalha <ouladchalha.k@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ouladck/walkthrough-nuxt/issues"
+  },
+  "homepage": "https://github.com/ouladck/walkthrough-nuxt#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "sass-embedded": "^1.80.2"
   }
 }

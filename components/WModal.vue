@@ -2,6 +2,7 @@
 
 export interface ModalOptions {
   element: HTMLElement;
+  title?: string;
   content: string;
   index: number;
   stepsCount: number,
@@ -39,15 +40,12 @@ const finishStep = () => {
         <button @click="closeModal" id="walkthrough-close" aria-label="Close button">X</button>
       </div>
       <div class="walkthrough-container">
-        <div v-html="content"></div>
+        <h3 v-if="title" class="walkthrough-title">{{ title }}</h3>
+        <div class="walkthrough" v-html="content"></div>
       </div>
       <div class="walkthrough-buttons">
         <div id="walkthrough-steps">
-          <span
-              v-for="n in stepsCount"
-              :key="n"
-              :class="{'current': n === index}"
-              class="walkthrough-step">•</span>
+          <span v-for="n in stepsCount" :key="n" :class="{ 'current': n === index }" class="walkthrough-step">•</span>
         </div>
         <div>
           <button @click="prevStep" :disabled="index === 1" :aria-label="prevText">
@@ -69,20 +67,29 @@ const finishStep = () => {
 
 <style lang="scss">
 .walkthrough-container {
-  video, iframe, img, svg {
+
+  video,
+  iframe,
+  img,
+  svg {
     height: 200px;
     width: auto;
     border-radius: 15px;
     aspect-ratio: 1;
   }
-  video, iframe {
+
+  video,
+  iframe {
     max-width: 100%;
     aspect-ratio: 16 / 9;
   }
-  img, svg {
+
+  img,
+  svg {
     aspect-ratio: 1 / 1;
   }
 }
+
 .walkthrough-highlight {
   outline: 2px solid #78290F;
   border-radius: 2px;
@@ -100,92 +107,111 @@ const finishStep = () => {
   align-items: center;
   z-index: 1001;
 
-}
+  .walkthrough-title {
+    padding: 10px;
+  }
 
-.walkthrough-content {
-  position: static;
-  background-color: #fff;
-  box-shadow: rgba(50, 50, 93, 0.25) 0 13px 27px -5px, rgba(0, 0, 0, 0.3) 0 8px 16px -8px;
-  padding: 20px 20px 10px;
-  border: 2px solid #15616d;
-  border-radius: 10px;
-  text-align: center;
-  max-width: 40%;
-  margin: 10px;
-  overflow: hidden;
-  @media (max-width: 768px) {
-    max-width: 70%;
-    padding: 1em;
-    max-height: 70vh;
+  .walkthrough-content {
+    position: static;
+    background-color: #fff;
+    box-shadow: rgba(50, 50, 93, 0.25) 0 13px 27px -5px, rgba(0, 0, 0, 0.3) 0 8px 16px -8px;
+    padding: 20px 20px 10px;
+    border: 2px solid #15616d;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 40%;
+    margin: 10px;
+    overflow: hidden;
+
+    @media (max-width: 768px) {
+      max-width: 70%;
+      padding: 1em;
+      max-height: 70vh;
+    }
+
+    @media (max-width: 480px) {
+      max-width: 75%;
+      padding: 0.8em;
+      max-height: 60vh;
+    }
+
+    .walkthrough-close-container {
+      position: relative;
+
+      #walkthrough-close {
+        position: absolute;
+        right: -24px;
+        top: -24px;
+        border: none;
+        border-radius: 0;
+        padding: 8px 11px;
+        z-index: 1002;
+        font-weight: 400;
+        background-color: unset;
+        font-size: 24px;
+
+        @media (max-width: 768px) {
+          font-size: 20px;
+          right: -22px;
+          top: -22px;
+        }
+
+        @media (max-width: 480px) {
+          font-size: 20px;
+          right: -18px;
+          top: -18px;
+        }
+      }
+    }
   }
-  @media (max-width: 480px) {
-    max-width: 75%;
-    padding: 0.8em;
-    max-height: 60vh;
-  }
-  .walkthrough-close-container {
-    position: relative;
-    #walkthrough-close {
-      position: absolute;
-      right: -24px;
-      top: -24px;
+
+  .walkthrough-buttons {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    place-items: center;
+    gap: 15px;
+
+    #walkthrough-steps {
+      display: flex;
+      flex-direction: row;
+      gap: 5px;
+
+      .walkthrough-step {
+        color: rgba(10, 93, 101, 0.66);
+      }
+
+      .current {
+        color: #15616d;
+        font-weight: bolder;
+      }
+    }
+
+    button {
+      margin: 0 5px;
       border: none;
-      background-color: #78290f;
-      border-radius: 0;
+      background-color: #15616d;
       color: #fff;
-      padding: 8px 11px;
-      z-index: 1002;
+      padding: 10px;
+      border-radius: 5px;
 
       &:hover {
-        background-color: rgba(120, 41, 15, 0.77);
+        background-color: rgba(10, 93, 101, 0.66);
+      }
+
+      &:disabled {
+        background-color: rgba(10, 93, 101, 0.66);
+        pointer-events: none;
       }
     }
   }
 }
 
-
-.walkthrough-buttons {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  place-items: center;
-  gap: 15px;
-
-  #walkthrough-steps {
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-    .walkthrough-step {
-      color: rgba(10, 93, 101, 0.66);
-    }
-    .current {
-      color: #15616d;
-      font-weight: bolder;
-    }
-  }
-
-  button {
-    margin: 0 5px;
-    border: none;
-    background-color: #15616d;
-    color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    &:hover {
-      background-color: rgba(10, 93, 101, 0.66);
-    }
-    &:disabled {
-      background-color: rgba(10, 93, 101, 0.66);
-      pointer-events: none;
-    }
-  }
-}
-
-
 .hidden {
   display: none;
 }
+
 .arrow {
   width: 0;
   height: 0;
@@ -210,6 +236,7 @@ const finishStep = () => {
   border-top: 20px solid #15616d;
   bottom: -20px;
 }
+
 .arrow.inner-bottom {
   border-top: 20px solid #15616d;
   border-top-color: white;

@@ -4,6 +4,7 @@ import { createApp, type App } from "vue";
 // Step options
 export interface Step {
     element: string;
+    title?: string;
     content: string;
     prevText?: string,
     nextText?: string,
@@ -26,6 +27,7 @@ export default defineNuxtPlugin(nuxtApp => {
     const element = ref('body');
     const isVisible = ref(false);
     const stepsCount = ref(0);
+    const title = ref('');
     const content = ref('');
     const startText = ref('Start');
     const prevText = ref('Previous');
@@ -79,6 +81,7 @@ export default defineNuxtPlugin(nuxtApp => {
     };
 
     const renderModal = (step: Step) => {
+        title.value = step.title ?? '';
         content.value = step.content;
         element.value = step.element;
     }
@@ -112,6 +115,7 @@ export default defineNuxtPlugin(nuxtApp => {
             index: index.value,
             stepsCount: stepsCount.value,
             isVisible: isVisible.value,
+            title: title.value,
             content: content.value,
             prevText: step.value.prevText ?? prevText.value,
             nextText: step.value.nextText ?? nextText.value,
@@ -143,7 +147,6 @@ export default defineNuxtPlugin(nuxtApp => {
         const rect = element.getBoundingClientRect();
         const modalRect = modal.getBoundingClientRect();
         const margin = 10; // Margin to keep the modal a little inside the viewport
-        console.log(rect, modalRect)
 
         // Calculate the default top position
         let top = -modalRect.height//rect.height + 20;
